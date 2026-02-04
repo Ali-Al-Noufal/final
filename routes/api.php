@@ -52,25 +52,3 @@ Route::put('/user/{user}/edit',[Usercontroller::class,'update']);
 //..................................................
 Route::post('/logout',[Authcontroller::class,'logout']);
 });
-Route::get('/init-db', function () {
-    try {
-        // إجبار الإعدادات يدوياً قبل الاتصال
-        config([
-            'database.connections.mysql.options' => [
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-                PDO::MYSQL_ATTR_SSL_CA => '/dev/null',
-            ]
-        ]);
-
-        // مسح الاتصالات القديمة لضمان استخدام الإعدادات الجديدة
-        DB::purge('mysql');
-        DB::reconnect('mysql');
-
-        // تنفيذ المهاجرة
-        Artisan::call('migrate:fresh', ['--force' => true]);
-        
-        return "تمت إعادة تهيئة قاعدة البيانات بنجاح!";
-    } catch (\Exception $e) {
-        return "خطأ في قاعدة البيانات: " . $e->getMessage();
-    }
-});
