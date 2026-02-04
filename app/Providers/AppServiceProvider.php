@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+           config(['database.connections.mysql.options.' . \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false]);
+    config(['database.connections.mysql.options.' . \PDO::MYSQL_ATTR_SSL_CA => '/dev/null']);
     }
 }

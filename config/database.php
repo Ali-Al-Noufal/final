@@ -56,10 +56,10 @@ return [
     'prefix_indexes' => true,
     'strict' => true,
     'engine' => null,
-    'options' => extension_loaded('pdo_mysql') ? array_filter([
-        PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'), // سنستخدم هذا
-        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,   // لتجاوز تدقيق الشهادة في السيرفرات السحابية
-    ]) : [],
+        'options' => [
+        PDO::MYSQL_ATTR_SSL_CA => '/dev/null',
+        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+    ]
 ],
 
         'mariadb' => [
