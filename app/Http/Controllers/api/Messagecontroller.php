@@ -37,11 +37,6 @@ class Messagecontroller extends Controller
         $message->name=strip_tags($request->name);
         $message->content=strip_tags($request->content);
         $message->title=strip_tags($request->title);
-        // $message=Message::create([
-        //     'name'=>$request->name,
-        //     'title'=>$request->title,
-        //     'content'=>$request->content,
-        // ]);
         $user->messages()->save($message);
         return response()->json(['message'=>'success']);
     }

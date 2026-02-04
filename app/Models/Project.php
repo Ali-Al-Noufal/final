@@ -18,7 +18,7 @@ class Project extends Model
     }
             function getImageUrlAttribute(){
         if($this->image){
-            return asset("/files".$this->image);
+            return asset("/files/images".$this->image);
         }
         return null;
     }

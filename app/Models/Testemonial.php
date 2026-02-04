@@ -8,14 +8,18 @@ use Workbench\App\Models\User;
 class Testemonial extends Model
 {
     protected $fillable = [
-        'image',
+            'image',
+            'title',
+            'user_name',
+            'description',
+            'rating',
     ];
     public function user(){
         return $this->belongsTo(User::class);
     }
         function getImageUrlAttribute(){
         if($this->image){
-            return asset("/files".$this->image);
+            return asset("/files/images".$this->image);
         }
         return null;
     }

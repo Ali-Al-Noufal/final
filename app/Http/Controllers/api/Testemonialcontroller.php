@@ -24,11 +24,20 @@ class Testemonialcontroller extends Controller
     {
         $request->validate([
             'image'=>'required|image',
+            'title'=>'required|string',
+            'user_name'=>'required|string',
+            'description'=>'required|string',
+            'rating'=>'required|number',
         ]);
             $image=$request->file('image');
             $imagename=time().".".$image->getclientoriginalname();
-            $image->move(public_path("files/"),$imagename);
-            $testemonial=new Testemonial(['image'=>$imagename]);
+            $image->move(public_path("files/images"),$imagename);
+            $testemonial=new Testemonial([
+                'image'=>$imagename,
+                'title'=>$request->title,
+                'user_name'=>$request->user_name,
+                'rating'=>$request->rating,
+                'description'=>$request->description,]);
             auth()->user()->testemonials()->save($testemonial);
             return response()->json(['message'=>'success']);
     }
@@ -58,7 +67,7 @@ class Testemonialcontroller extends Controller
         if(empty($testemonial)){
             return response()->json(['message'=>'testemonial not found']);
         }
-        $image_path=public_path('files/'.$testemonial->image);
+        $image_path=public_path('files/images'.$testemonial->image);
         unlink($image_path);
         $testemonial->delete();
         return response()->json(['message'=>'success']);

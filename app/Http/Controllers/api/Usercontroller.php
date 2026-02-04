@@ -47,22 +47,24 @@ class Usercontroller extends Controller
         }
         $request->validate([
             'name'=>'required|string',
+            'address'=>'required|string',
             'email'=>'required|email',
             'password'=>'required|min:8|confirmed',
         ]);
         if($request->hasFile('cv')){
             $cv=$request->file('cv');
             $cvname=time().".".$cv->getclientoriginalname();
-            $cv->move(public_path("files/"),$cvname);
+            $cv->move(public_path("files/file"),$cvname);
             $user->cv=$cvname;
         }
             if($request->hasFile('image')){
             $image=$request->file('image');
             $imagename=time().".".$image->getclientoriginalname();
-            $image->move(public_path("files/"),$imagename);
+            $image->move(public_path("files/images"),$imagename);
             $user->image=$imagename;
         }
         $user->name=strip_tags($request->name);
+        $user->address=strip_tags($request->address);
         $user->email=strip_tags($request->email);
         $user->password=strip_tags($request->password);
         $user->save();

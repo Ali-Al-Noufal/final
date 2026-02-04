@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('testemonials', function (Blueprint $table) {
             $table->id();
             $table->string('image');
+            $table->string('title');
+            $table->string('user_name');
+            $table->string('description');
+            $table->integer('rating');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

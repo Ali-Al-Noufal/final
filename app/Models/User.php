@@ -27,6 +27,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'address',
         'image',
         'phone',
         'password',
@@ -46,13 +47,13 @@ class User extends Authenticatable
     }
     function getImageUrlAttribute(){
         if($this->image){
-            return asset("/files".$this->image);
+            return asset("/files/images".$this->image);
         }
         return null;
     }
         function getcvUrlAttribute(){
         if($this->cv){
-            return asset("/files".$this->cv);
+            return asset("/files/file".$this->cv);
         }
         return null;
     }

@@ -30,7 +30,7 @@ class Projectcontroller extends Controller
         ]);
             $image=$request->file('image');
             $imagename=time().".".$image->getclientoriginalname();
-            $image->move(public_path("files/"),$imagename);
+            $image->move(public_path("files/images"),$imagename);
         $description=strip_tags($request->description);
         $title=strip_tags($request->title);
         $project=new Project([
@@ -71,11 +71,11 @@ class Projectcontroller extends Controller
           'description'=>'string|required',
         ]);
             if($request->hasFile('image')){
-            $image_path=public_path('files/'.$project->image);
+            $image_path=public_path('files/images'.$project->image);
             unlink($image_path);
             $image=$request->file('image');
             $imagename=time().".".$image->getclientoriginalname();
-            $image->move(public_path("files/"),$imagename);
+            $image->move(public_path("files/images"),$imagename);
             $project->image=$imagename;
         }
         $project->url=$request->url;
