@@ -44,11 +44,11 @@ return [
 'mysql' => [
     'driver' => 'mysql',
     'url' => env('DB_URL'),
-    'host' => 'gateway01.ap-northeast-1.prod.aws.tidbcloud.com',
-    'port' => '4000',
-    'database' => 'test',
-    'username' => '4TPRsHawdZcfjyX.root',
-    'password' => 'c4qgyZalWLYTrrQv',
+    'host' => env('DB_HOST', '127.0.0.1'),
+    'port' => env('DB_PORT', '3306'),
+    'database' => env('DB_DATABASE', 'forge'),
+    'username' => env('DB_USERNAME', 'forge'),
+    'password' => env('DB_PASSWORD', ''),
     'unix_socket' => env('DB_SOCKET', ''),
     'charset' => 'utf8mb4',
     'collation' => 'utf8mb4_unicode_ci',
@@ -59,6 +59,7 @@ return [
 'options' => [
     \PDO::MYSQL_ATTR_SSL_CA => '/dev/null',
     \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+
 ],
 ],
 
