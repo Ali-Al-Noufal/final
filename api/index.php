@@ -1,33 +1,25 @@
 <?php
 
-$storagePath = '/tmp/storage';
-$cachePath = '/tmp/bootstrap/cache';
-
-$directories = [
-    $storagePath . '/framework/views',
-    $storagePath . '/framework/cache',
-    $storagePath . '/framework/sessions',
-    $storagePath . '/logs',
-    $cachePath
+// 1. تهيئة المجلدات الضرورية في المجلد المؤقت
+$tempStorage = [
+    '/tmp/storage/framework/views',
+    '/tmp/storage/framework/cache',
+    '/tmp/storage/framework/sessions',
+    '/tmp/storage/logs',
+    '/tmp/bootstrap/cache'
 ];
 
-foreach ($directories as $dir) {
-    if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
+foreach ($tempStorage as $path) {
+    if (!is_dir($path)) {
+        mkdir($path, 0755, true);
     }
 }
 
-// --- الجزء الجديد والحاسم لإجبار التطبيق على نسيان الإعدادات القديمة ---
-if (file_exists($cachePath . '/config.php')) {
-    unlink($cachePath . '/config.php');
-}
-// أضف هذا السطر مع أوامر الـ unlink السابقة في api/index.php
-if (file_exists($cachePath . '/routes-v7.php')) {
-    unlink($cachePath . '/routes-v7.php');
-}
-// -------------------------------------------------------------------
+// 2. إخبار لارافيل أين يضع ملفات الكاش الجديدة بدلاً من المجلد المحمي
+putenv('APP_CONFIG_CACHE=/tmp/bootstrap/cache/config.php');
+putenv('APP_ROUTES_CACHE=/tmp/bootstrap/cache/routes.php');
+putenv('APP_SERVICES_CACHE=/tmp/bootstrap/cache/services.php');
+putenv('APP_PACKAGES_CACHE=/tmp/bootstrap/cache/packages.php');
 
-putenv("APP_SERVICES_CACHE={$cachePath}/services.php");
-putenv("APP_PACKAGES_CACHE={$cachePath}/packages.php");
-
+// 3. استدعاء ملف التشغيل الأصلي
 require __DIR__ . '/../public/index.php';
