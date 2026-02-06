@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/seed-data', function () {
+Route::get('/debug-db', function () {
     try {
-        Artisan::call('db:seed', ['--force' => true]);
-        return "تمت إضافة البيانات بنجاح!";
+        DB::connection()->getPdo();
+        return "الاتصال ناجح تماماً!";
     } catch (\Exception $e) {
-        return $e->getMessage();
+        return "فشل الاتصال: " . $e->getMessage();
     }
 });
