@@ -1,10 +1,8 @@
 <?php
 
-// 1. تحديد المجلد المؤقت في Vercel
 $storagePath = '/tmp/storage';
 $cachePath = '/tmp/bootstrap/cache';
 
-// 2. إنشاء الهيكلية المطلوبة في المجلد المؤقت المسموح بالكتابة فيه
 $directories = [
     $storagePath . '/framework/views',
     $storagePath . '/framework/cache',
@@ -19,10 +17,13 @@ foreach ($directories as $dir) {
     }
 }
 
-// 3. إعادة توجيه المسارات الحساسة للمجلد المؤقت
-// هذا السطر يحل مشكلة "must be present and writable"
+// --- الجزء الجديد والحاسم لإجبار التطبيق على نسيان الإعدادات القديمة ---
+if (file_exists($cachePath . '/config.php')) {
+    unlink($cachePath . '/config.php');
+}
+// -------------------------------------------------------------------
+
 putenv("APP_SERVICES_CACHE={$cachePath}/services.php");
 putenv("APP_PACKAGES_CACHE={$cachePath}/packages.php");
 
-// 4. استدعاء ملف التشغيل الأصلي
 require __DIR__ . '/../public/index.php';
