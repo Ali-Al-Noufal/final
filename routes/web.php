@@ -8,10 +8,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/debug-db', function () {
-    try {
-        DB::connection()->getPdo();
-        return "الاتصال ناجح تماماً!";
-    } catch (\Exception $e) {
-        return "فشل الاتصال: " . $e->getMessage();
-    }
+    return [
+        'current_host' => env('DB_HOST'),
+        'current_db' => env('DB_DATABASE'),
+        'app_key_exists' => !empty(env('APP_KEY')),
+    ];
 });
