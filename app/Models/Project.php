@@ -9,9 +9,15 @@ class Project extends Model
 {
         protected $fillable = [
         'title',
+        'type',
         'image',
         'description',
-        'url',
+        'gh_url',
+        'domain',
+        'basic_languages',
+        'framework',
+        'libraries',
+        'date'
     ];
         public function user(){
         return $this->belongsTo(User::class);

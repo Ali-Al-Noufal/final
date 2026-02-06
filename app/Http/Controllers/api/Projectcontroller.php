@@ -24,9 +24,15 @@ class Projectcontroller extends Controller
     {
         $request->validate([
           'image'=>'image|required',
-          'url'=>'string|required',
+          'gh_url'=>'string|required',
+          'domain'=>'string|required',
           'title'=>'string|required',
+          'type'=>'string|required',
           'description'=>'string|required',
+          'basic_languages'=>'string|required',
+          'framework'=>'string|required',
+          'libraries'=>'string|required',
+          'date'=>'string|required',
         ]);
             $image=$request->file('image');
             $imagename=time().".".$image->getclientoriginalname();
@@ -34,8 +40,14 @@ class Projectcontroller extends Controller
         $description=strip_tags($request->description);
         $title=strip_tags($request->title);
         $project=new Project([
-            'url'=>$request->url,
+            'gh_url'=>$request->gh_url,
+            'domain'=>$request->domain,
             'title'=>$title,
+            'type'=>$request->type,
+            'basic_languages'=>$request->basic_languages,
+            'framework'=>$request->framework,
+            'libraries'=>$request->libraries,
+            'date'=>$request->date,
             'image'=>$imagename,
             'description'=>$description,
         ]);
@@ -66,9 +78,15 @@ class Projectcontroller extends Controller
         }
                 $request->validate([
           'image'=>'image|required',
-          'url'=>'string|required',
+          'gh_url'=>'string|required',
+          'domain'=>'string|required',
           'title'=>'string|required',
+          'type'=>'string|required',
           'description'=>'string|required',
+          'basic_languages'=>'string|required',
+          'framework'=>'string|required',
+          'libraries'=>'string|required',
+          'date'=>'string|required',
         ]);
             if($request->hasFile('image')){
             $image_path=public_path('files/images'.$project->image);
@@ -78,8 +96,14 @@ class Projectcontroller extends Controller
             $image->move(public_path("files/images"),$imagename);
             $project->image=$imagename;
         }
-        $project->url=$request->url;
+        $project->gh_url=$request->gh_url;
+        $project->domain=$request->domain;
+        $project->framework=$request->framework;
+        $project->basic_languages=$request->basic_languages;
+        $project->libraries=$request->libraries;
+        $project->date=$request->date;
         $project->title=strip_tags($request->title);
+        $project->type=strip_tags($request->type);
         $project->description=strip_tags($request->description);
         $project->save();
         return response()->json(['message'=>'updated successfuly']);

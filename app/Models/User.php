@@ -32,6 +32,7 @@ class User extends Authenticatable
         'phone',
         'password',
         'cv',
+        'about_me',
     ];
     public function skills(){
         return $this->hasMany(Skill::class);

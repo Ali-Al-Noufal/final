@@ -48,6 +48,7 @@ class Usercontroller extends Controller
         $request->validate([
             'name'=>'required|string',
             'address'=>'required|string',
+            'about_me'=>'required|string',
             'email'=>'required|email',
             'password'=>'required|min:8|confirmed',
         ]);
@@ -64,6 +65,7 @@ class Usercontroller extends Controller
             $user->image=$imagename;
         }
         $user->name=strip_tags($request->name);
+        $user->about_me=strip_tags($request->about_me);
         $user->address=strip_tags($request->address);
         $user->email=strip_tags($request->email);
         $user->password=strip_tags($request->password);
