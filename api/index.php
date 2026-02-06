@@ -21,6 +21,10 @@ foreach ($directories as $dir) {
 if (file_exists($cachePath . '/config.php')) {
     unlink($cachePath . '/config.php');
 }
+// أضف هذا السطر مع أوامر الـ unlink السابقة في api/index.php
+if (file_exists($cachePath . '/routes-v7.php')) {
+    unlink($cachePath . '/routes-v7.php');
+}
 // -------------------------------------------------------------------
 
 putenv("APP_SERVICES_CACHE={$cachePath}/services.php");
