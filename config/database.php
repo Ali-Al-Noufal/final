@@ -57,9 +57,8 @@ return [
     'strict' => true,
     'engine' => null,
 'options' => [
-    PDO::MYSQL_ATTR_SSL_CA => '/dev/null', // أو اتركها فارغة إذا لم تنجح
-    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4',
+    \PDO::MYSQL_ATTR_SSL_CA => '/dev/null',
+    \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
 ],
 ],
 
