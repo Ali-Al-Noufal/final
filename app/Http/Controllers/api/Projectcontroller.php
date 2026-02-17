@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class Projectcontroller extends Controller
 {
@@ -34,9 +35,20 @@ class Projectcontroller extends Controller
           'libraries'=>'string|required',
           'date'=>'string|required',
         ]);
-            $image=$request->file('image');
-            $imagename=time().".".$image->getclientoriginalname();
-            $image->move(public_path("files/images"),$imagename);
+        $image = $request->file('image');
+        $filename = time() . '-' . $image->getClientOriginalName();
+        
+        // قراءة محتوى الصورة
+        $fileContent = file_get_contents($image->getRealPath());
+
+        // إرسال الصورة إلى Vercel Blob API
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('BLOB_READ_WRITE_TOKEN'),
+            'x-add-random-suffix' => 'true', // لإضافة رمز عشوائي يمنع تكرار الأسماء
+        ])->withBody($fileContent, $image->getMimeType())
+          ->put("https://blob.vercel-storage.com/" . $filename);
+            $data = $response->json();
+            $imageUrl = $data['url']; // هذا هو الرابط الدائم للصورة
         $description=strip_tags($request->description);
         $title=strip_tags($request->title);
         $project=new Project([
@@ -48,7 +60,7 @@ class Projectcontroller extends Controller
             'framework'=>$request->framework,
             'libraries'=>$request->libraries,
             'date'=>$request->date,
-            'image'=>$imagename,
+            'image'=>$imageUrl,
             'description'=>$description,
         ]);
         auth()->user()->projects()->save($project);
@@ -89,12 +101,21 @@ class Projectcontroller extends Controller
           'date'=>'string|required',
         ]);
             if($request->hasFile('image')){
-            $image_path=public_path('files/images'.$project->image);
-            unlink($image_path);
-            $image=$request->file('image');
-            $imagename=time().".".$image->getclientoriginalname();
-            $image->move(public_path("files/images"),$imagename);
-            $project->image=$imagename;
+             $image = $request->file('image');
+        $filename = time() . '-' . $image->getClientOriginalName();
+        
+        // قراءة محتوى الصورة
+        $fileContent = file_get_contents($image->getRealPath());
+
+        // إرسال الصورة إلى Vercel Blob API
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('BLOB_READ_WRITE_TOKEN'),
+            'x-add-random-suffix' => 'true', // لإضافة رمز عشوائي يمنع تكرار الأسماء
+        ])->withBody($fileContent, $image->getMimeType())
+          ->put("https://blob.vercel-storage.com/" . $filename);
+            $data = $response->json();
+            $imageUrl = $data['url']; // هذا هو الرابط الدائم للصورة
+            $project->image=$imageUrl;
         }
         $project->gh_url=$request->gh_url;
         $project->domain=$request->domain;

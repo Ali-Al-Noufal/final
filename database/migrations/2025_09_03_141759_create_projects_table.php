@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('type');
             $table->string('image');
-            $table->string('description');
+            $table->text('description');
             $table->string('gh_url');
             $table->string('domain');
             $table->string('basic_languages');
