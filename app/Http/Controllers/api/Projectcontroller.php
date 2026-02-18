@@ -139,8 +139,6 @@ class Projectcontroller extends Controller
         if(empty($project)){
             return response()->json(['message'=>'project not found']);
         }
-        $image_path=public_path('files/'.$project->image);
-        unlink($image_path);
         $project->delete();
         return response()->json(['message'=>'success']);
     }
